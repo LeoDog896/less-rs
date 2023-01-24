@@ -1,20 +1,29 @@
 // Primitive values (held by rules and variables)
-value = @{ ASCII_DIGIT+ } 
+value = @{
+	("@" ~ variable_name) |
+	(ASCII_DIGIT+ ~ "px"?)
+}
 
 // handle variables (like @test: 1)
-variable_name = @{ ASCII_ALPHA+ }
+variable_name = @{ (ASCII_ALPHA | "-")+ }
 variable = { "@" ~ variable_name ~ ":" ~ value ~ ";" }
 
 // handle rules (color: red)
-rule_name = @{ ASCII_ALPHA+ }
+rule_name = @{ (ASCII_ALPHA | "-")+ }
 rule = { rule_name ~ ":" ~ value ~ ";" }
 
 // handle selectors (normal in CSS)
-selector = @{ ("." | "#")? ~ ASCII_ALPHA+ }
+selector = @{ ("." | "#")? ~ (ASCII_ALPHA | "-")+ }
 declaration = { selector ~ "{" ~ (expr | rule)* ~ "}" }
 
 expr = { (variable | declaration)+ }
 
 stylesheet = _{ SOI ~ expr ~ EOI }
+
+// Block comments and multi-line comments
+COMMENT = _{
+	("/*" ~ (!"*/" ~ANY)* ~ "*/") | 
+	("//" ~ (!"\n" ~ ANY)*)
+}
 
 WHITESPACE = _{ " " | "\n" | "\r" }
