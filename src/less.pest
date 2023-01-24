@@ -1,0 +1,10 @@
+variable_name = @{ ASCII_ALPHA+ }
+variable = { "@" ~ variable_name ~ ":" ~ value ~ ";" }
+
+value = @{ ASCII_DIGIT } 
+
+expr = { variable+ }
+
+stylesheet = _{ SOI ~ expr ~ EOI }
+
+WHITESPACE = _{ " " | "\n" | "\r" }
