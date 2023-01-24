@@ -1,9 +1,19 @@
+// Primitive values (held by rules and variables)
+value = @{ ASCII_DIGIT+ } 
+
+// handle variables (like @test: 1)
 variable_name = @{ ASCII_ALPHA+ }
 variable = { "@" ~ variable_name ~ ":" ~ value ~ ";" }
 
-value = @{ ASCII_DIGIT } 
+// handle rules (color: red)
+rule_name = @{ ASCII_ALPHA+ }
+rule = { rule_name ~ ":" ~ value ~ ";" }
 
-expr = { variable+ }
+// handle selectors (normal in CSS)
+selector = @{ ("." | "#")? ~ ASCII_ALPHA+ }
+declaration = { selector ~ "{" ~ (expr | rule)* ~ "}" }
+
+expr = { (variable | declaration)+ }
 
 stylesheet = _{ SOI ~ expr ~ EOI }
 
