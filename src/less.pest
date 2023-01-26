@@ -10,6 +10,10 @@ value = @{
 variable_name = @{ (ASCII_ALPHA | "-")+ }
 variable = { "@" ~ variable_name ~ ":" ~ value ~ ";" }
 
+// handle imports
+import_name = @{ (!"\"" ~ ANY)* }
+import = { "@import \"" ~ import_name ~ "\"" ~ ";"}
+
 // handle rules (color: red)
 rule_name = @{ (ASCII_ALPHA | "-")+ }
 rule = { rule_name ~ ":" ~ value ~ ";" }
@@ -18,7 +22,7 @@ rule = { rule_name ~ ":" ~ value ~ ";" }
 selector = @{ ("." | "#")? ~ (ASCII_ALPHA | "-")+ }
 declaration = { selector ~ "{" ~ (expr | rule)* ~ "}" }
 
-expr = { (variable | declaration)+ }
+expr = { (variable | declaration | import)+ }
 
 stylesheet = _{ SOI ~ expr? ~ EOI }
 
