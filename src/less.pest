@@ -18,7 +18,7 @@ declaration = { selector ~ "{" ~ (expr | rule)* ~ "}" }
 
 expr = { (variable | declaration)+ }
 
-stylesheet = _{ SOI ~ expr ~ EOI }
+stylesheet = _{ SOI ~ expr? ~ EOI }
 
 // Block comments and multi-line comments
 COMMENT = _{
