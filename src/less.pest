@@ -1,7 +1,9 @@
+unit = @{ "cm" | "mm" | "in" | "px" | "pt" | "pc" | "em" | "ex" | "ch" | "rem" | "vw" | "vh" | "vmin" | "vmax" | "%" }
+
 // Primitive values (held by rules and variables)
 value = @{
 	("@" ~ variable_name) |
-	(ASCII_DIGIT+ ~ "px"?)
+	(ASCII_DIGIT+ ~ unit?)
 }
 
 // handle variables (like @test: 1)
